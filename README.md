@@ -10,6 +10,7 @@ This is a simple example of how to use Kafka with NodeJS and Python3.
 
 ## How to run
 
+Run Kafka broker locally:
 ```bash
 sudo docker-compose up -d
 ```
