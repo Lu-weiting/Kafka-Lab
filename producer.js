@@ -22,22 +22,25 @@ const createTopic = async (topic) => {
     await admin.disconnect();
 }
 
-const producer = kafka.producer();
 
+const producer = kafka.producer();
+const id = Math.round(Math.random() * 1000);
+let i = 0;
 const sendMessage = async () => {
     try {
-        const getRandomNumber = () => Math.round(Math.random(10) * 1000);
+        // const getRandomNumber = () => Math.round(Math.random() * 1000);
         const data = await producer
             .send({
                 topic,
                 compression: CompressionTypes.GZIP,
                 messages: [
-                    { 
-                        key: `${getRandomNumber()}`,
-                        value: `Hello Kafka from Node.js!, ${getRandomNumber()}`
+                    {
+                        // key: `${getRandomNumber()}`,
+                        value: `producer id:${id}, sent: ${i}`
                     },
                 ]
             });
+            i++;
         return console.log(data);
     } catch (e) {
         return console.error(`Could not write message`, e);
@@ -47,7 +50,7 @@ const topic = 'topic-test';
 const produce = async () => {
     await createTopic(topic);
     await producer.connect()
-    setInterval(sendMessage, 2000)
+    setInterval(sendMessage,1000)
 };
 produce().catch(e => console.error(`[example/producer] ${e.message}`, e));
 
